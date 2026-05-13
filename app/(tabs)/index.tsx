@@ -1,98 +1,117 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import React from 'react';
+import { View, Text, Image, Button, StyleSheet, ScrollView } from 'react-native';
 
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+// 1. Definimos la Interface para las Props (Indispensable en TSX)
+interface CardProps {
+  titulo: string;
+  imagenUrl: string;
+  children: React.ReactNode; // ReactNode permite cualquier contenido dentro de las etiquetas
+}
 
-export default function HomeScreen() {
+// 2. Creamos el componente Card usando la Interface
+const Card = ({ titulo, children, imagenUrl }: CardProps) => {
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+    <View style={styles.card}>
+      {/* Uso de Image con tipado estricto */}
+      <Image 
+        source={{ uri: imagenUrl }} 
+        style={styles.imagen} 
+      />
+      
+      <Text style={styles.titulo}>{titulo}</Text>
+      
+      <View style={styles.contenido}>
+        {children}
+      </View>
+      
+      <Button 
+        title="Ver más" 
+        onPress={() => alert(`Seleccionaste: ${titulo}`)} 
+        color="#4F46E5"
+      />
+    </View>
+  );
+};
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+// Componente Principal
+export default function App() {
+  return (
+    <ScrollView style={styles.container}>
+      <Text style={styles.header}>Gatos jeje</Text>
+
+      <Card 
+        titulo="Gato negro" 
+        imagenUrl="https://biblicalscienceinstitute.com/wp-content/uploads/2021/06/cat_eyes_free.jpg"
+      >
+        <Text style={styles.descripcion}>
+          Los gatos negros tienen un caracter muy particular.
+        </Text>
+      </Card>
+
+      <Card 
+        titulo="Gato naranja" 
+        imagenUrl="https://www.patasencasa.com/sites/default/files/styles/article_detail_desktop/public/2024-05/gato%20naranja_0.jpg.webp?itok=9NIHKX_b"
+      >
+        <Text style={styles.descripcion}>
+          Estos gatos son muy extrovertidos y caoticos. Los quiero mucho.
+        </Text>
+      </Card>
+
+      <Card 
+        titulo="Gato siamés" 
+        imagenUrl="https://gatosderaza.com/wp-content/uploads/2025/07/Gato-Siames-980x654.jpg"
+      >
+        <Text style={styles.descripcion}>
+          Gatos con color de piel muy especial. Nunca pude ver a uno con mis propios ojos.
+        </Text>
+      </Card>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  container: {
+    flex: 1,
+    backgroundColor: '#f3f4f6',
+    padding: 20,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  header: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginVertical: 20,
+    color: '#1f2937',
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  card: {
+    backgroundColor: '#fff',
+    borderRadius: 15,
+    padding: 15,
+    marginBottom: 20,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  },
+  imagen: {
+    width: '100%',
+    height: 120,
+    borderRadius: 10,
+    resizeMode: 'contain',
+    marginBottom: 10,
+  },
+  titulo: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#374151',
+    marginBottom: 5,
+  },
+  contenido: {
+    marginBottom: 15,
+  },
+  descripcion: {
+    fontSize: 14,
+    color: '#6b7280',
+    lineHeight: 20,
   },
 });
