@@ -1,18 +1,15 @@
 import React from 'react';
 import { View, Text, Image, Button, StyleSheet, ScrollView } from 'react-native';
 
-// 1. Definimos la Interface para las Props (Indispensable en TSX)
 interface CardProps {
   titulo: string;
   imagenUrl: string;
-  children: React.ReactNode; // ReactNode permite cualquier contenido dentro de las etiquetas
+  children: React.ReactNode;
 }
 
-// 2. Creamos el componente Card usando la Interface
 const Card = ({ titulo, children, imagenUrl }: CardProps) => {
   return (
     <View style={styles.card}>
-      {/* Uso de Image con tipado estricto */}
       <Image 
         source={{ uri: imagenUrl }} 
         style={styles.imagen} 
@@ -33,7 +30,6 @@ const Card = ({ titulo, children, imagenUrl }: CardProps) => {
   );
 };
 
-// Componente Principal
 export default function App() {
   return (
     <ScrollView style={styles.container}>
